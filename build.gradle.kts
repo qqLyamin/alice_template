@@ -23,7 +23,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-
     implementation("org.slf4j:slf4j-simple:$slf4j")
     implementation("org.slf4j:slf4j-log4j12:$slf4j")
 
@@ -32,6 +31,7 @@ dependencies {
     implementation("com.just-ai.jaicf:mongo:$jaicf")
 
     implementation("io.ktor:ktor-server-netty:$ktor")
+    implementation("org.json:json:20190722")
 }
 
 tasks {

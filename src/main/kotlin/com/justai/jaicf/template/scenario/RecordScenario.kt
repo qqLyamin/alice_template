@@ -1,5 +1,7 @@
 package com.justai.jaicf.template.scenario
 
+import com.justai.jaicf.api.BotRequest
+import com.justai.jaicf.api.MutableBotRequest
 import com.justai.jaicf.builder.Scenario
 import com.justai.jaicf.context.ActionContext
 import com.justai.jaicf.context.DefaultActionContext
@@ -11,7 +13,7 @@ val RecordScenario = Scenario {
 
         state("data") {
             activators {
-                regex("\\d+.*")
+                catchAll()
             }
 
             action {
@@ -24,8 +26,10 @@ val RecordScenario = Scenario {
         }
     }
 }
-
+    /*
 fun DefaultActionContext.record(message: String, callback: String) {
     reactions.say(message)
-    city = message
+    reactions.changeState("/record", callback)
 }
+
+     */
