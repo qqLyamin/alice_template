@@ -5,7 +5,6 @@ import com.justai.jaicf.channel.yandexalice.alice
 import com.justai.jaicf.channel.yandexalice.model.AliceEvent
 import com.justai.jaicf.context.DefaultActionContext
 import com.justai.jaicf.helpers.logging.log
-import netscape.javascript.JSObject
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URL
