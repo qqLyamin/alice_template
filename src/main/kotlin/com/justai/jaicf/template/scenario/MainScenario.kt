@@ -14,10 +14,11 @@ val MainScenario = Scenario {
 
         action {
             reactions.run {
-                say("Привет! Я - погодный чатбот, Вас интересует погода?")
                 buttons("Да", "Нет")
                 alice?.image(
-                    "https://i.imgur.com/u96v35i.jpeg"
+                    "https://i.imgur.com/u96v35i.jpeg",
+                    "Привет! Я - погодный чатбот.",
+                    "Вас интересует погода? А то я больше ничего не умею..."
                 )
             }
         }
