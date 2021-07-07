@@ -3,6 +3,9 @@ package com.justai.jaicf.template.scenario
 import com.justai.jaicf.builder.Scenario
 import com.justai.jaicf.channel.yandexalice.model.AliceEvent
 import com.justai.jaicf.channel.yandexalice.alice
+import java.net.URL
+
+var city = "";
 
 val MainScenario = Scenario {
     append(RecordScenario)
@@ -26,22 +29,35 @@ val MainScenario = Scenario {
 
     state("yes") {
         activators {
-            regex("да|хочу")
+            regex("да|хочу|ага|интересует")
         }
 
         action {
-            record("Сколько вы потратили холодной воды?", "warm")
+            record("У меня нет Ваших геоданных, в каком" +
+                    " городе Вас интересует погода?", "city")
         }
 
-        state("warm") {
-
+        state("city") {
+            var cityData = ""
             action {
-                record("Сколько ушло горячей?", "done")
+                cityData = URL("http://api.openweathermap.org/geo/1.0/direct?q=${city}" +
+                        "&limit=5&appid=0b6281885400ddf04c0b75fc7066989c").readText()
+                reactions.say("City - ${city} ====== cityData - ${cityData}")
+                record("", "done")
             }
 
+/*            if (!cityData.isEmpty()) {
+                action {
+                    URL("https://api.openweathermap.org/data/2.5/onecall?" +
+                                "lat=${CITY.lat}&lon=${CITY.lon}" +
+                                "&exclude=hourly,daily&" +
+                                "appid=0b6281885400ddf04c0b75fc7066989c"
+                    ).readText()
+                }
+            }
+*/
             state("done") {
                 action {
-                    reactions.say("Записала ваши показания. Ждите квитанцию на оплату.")
                     reactions.alice?.endSession()
                 }
             }
@@ -60,7 +76,9 @@ val MainScenario = Scenario {
     }
 
     fallback {
-        reactions.say("Не тратьте мое время зря. Вы хотите сообщить показания счетчиков?")
+        reactions.say("Привет! Я - погодный чатбот и я в небольшой депрессии... " +
+                "Так что если Вас реально интересует погода - скажите об этом побыстрей " +
+                "и покончим с этим.")
         reactions.buttons("Да", "Нет")
     }
 }

@@ -27,5 +27,5 @@ val RecordScenario = Scenario {
 
 fun DefaultActionContext.record(message: String, callback: String) {
     reactions.say(message)
-    reactions.changeState("/record", callback)
+    city = message
 }
