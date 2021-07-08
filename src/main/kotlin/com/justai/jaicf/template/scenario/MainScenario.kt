@@ -52,6 +52,11 @@ val MainScenario = Scenario {
                 "done"
             )
         }
+        state("done") {
+            action {
+                reactions.alice?.endSession()
+            }
+        }
     }
     state("London") {
         activators {
@@ -74,6 +79,11 @@ val MainScenario = Scenario {
                         "А больше я ничего сказать не могу...",
                 "done"
             )
+        }
+        state("done") {
+            action {
+                reactions.alice?.endSession()
+            }
         }
     }
     state("Yes") {
