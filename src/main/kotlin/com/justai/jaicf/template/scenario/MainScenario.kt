@@ -15,13 +15,15 @@ val MainScenario = Scenario {
         }
         action {
             reactions.run {
-                buttons("Москва", "Питер")
+                buttons("Москва", "Лондон")
                 alice?.image(
                     "https://i.imgur.com/u96v35i.jpeg",
-                    "Привет!\n" +
-                            "Я Чайка и я слежу за погодой!" +
-                            "В каком городе Вас интересует погода?" +
-                            "И интересует ли?"
+                    """
+                        |Привет!
+                        |Я Чайка и я слежу за погодой!
+                        |В каком городе Вас интересует погода?
+                        |И интересует ли?
+                        |""".trimMargin()
                 )
             }
         }
@@ -51,21 +53,20 @@ val MainScenario = Scenario {
             )
         }
     }
-    state("Piter") {
+    state("London") {
         activators {
             regex(
-                "в Питере|в питере|питер|Питер|" +
-                        "погода в питере|спб|Спб|СпБ|СПБ|" +
-                        "погода в спб"
+                "в Лондоне|в лондоне|лондон|Лондон|" +
+                        "погода в лондоне"
             )
         }
 
         action {
-            var cityCoordinates: Coordinates = getCoordinates("Санкт-Петербург")
+            var cityCoordinates: Coordinates = getCoordinates("Лондон")
             var currentWeather: Weather = getWeather(cityCoordinates)
 
             record(
-                "Погода в городе Санкт-Петербург :\n" +
+                "Погода в городе Лондон :\n" +
                         "Температура воздуха - ${currentWeather.temperature} °С\n" +
                         "Ощущается как - ${currentWeather.feelsLike} °С\n" +
                         "Скорость ветра - ${currentWeather.windSpeed} м/с.\n" +
