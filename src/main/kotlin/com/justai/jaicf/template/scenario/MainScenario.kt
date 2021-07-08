@@ -47,8 +47,8 @@ val MainScenario = Scenario {
 
                 record(
                     "Погода в городе ${request.input} :\n" +
-                            "Температура воздуха - ${currentWeather.temperature}\n °С" +
-                            "Ощущается как - ${currentWeather.feelsLike}\n °С" +
+                            "Температура воздуха - ${currentWeather.temperature} °С\n" +
+                            "Ощущается как - ${currentWeather.feelsLike} °С\n" +
                             "Скорость ветра - ${currentWeather.windSpeed} м/с.\n" +
                             "Облачность - ${currentWeather.clouds} %.\n" +
                             "А больше я ничего сказать не могу...",
@@ -57,14 +57,12 @@ val MainScenario = Scenario {
             }
         }
 
-
         state("done") {
             action {
                 reactions.alice?.endSession()
             }
         }
     }
-
 
     state("no") {
         activators {
@@ -78,7 +76,7 @@ val MainScenario = Scenario {
     }
 
     fallback {
-        reactions.say("2Привет! Я - погодный чатбот и я в небольшой депрессии... " +
+        reactions.say("Привет! Я - погодный чатбот и я в небольшой депрессии... " +
                 "Так что если Вас реально интересует погода - скажите об этом побыстрей " +
                 "и покончим с этим.")
         reactions.buttons("Да", "Нет")
