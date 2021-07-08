@@ -13,30 +13,81 @@ val MainScenario = Scenario {
         activators {
             event(AliceEvent.START)
         }
-
         action {
             reactions.run {
-                buttons("Да", "Нет")
+                buttons("Москва", "Питер")
                 alice?.image(
                     "https://i.imgur.com/u96v35i.jpeg",
-                    "Привет! Я - погодный чатбот.",
-                    "Хотите расскажу про погоду, интересует? А то я больше ничего не умею..."
+                    "Привет!\n" +
+                            "Я Чайка и я слежу за погодой!" +
+                            "В каком городе Вас интересует погода?" +
+                            "И интересует ли?"
                 )
             }
         }
     }
 
-    state("yes") {
+    state("Moscow") {
         activators {
-            regex("да|хочу|ага|интересует")
+            regex(
+                "в Москве|в москве|москва|Москва|" +
+                        "погода в москве|мск|Мск|" +
+                        "погода в мск"
+            )
         }
 
+        action {
+            var cityCoordinates: Coordinates = getCoordinates("Москва")
+            var currentWeather: Weather = getWeather(cityCoordinates)
+
+            record(
+                "Погода в городе Москва :\n" +
+                        "Температура воздуха - ${currentWeather.temperature} °С\n" +
+                        "Ощущается как - ${currentWeather.feelsLike} °С\n" +
+                        "Скорость ветра - ${currentWeather.windSpeed} м/с.\n" +
+                        "Облачность - ${currentWeather.clouds} %.\n" +
+                        "А больше я ничего сказать не могу...",
+                "done"
+            )
+        }
+    }
+    state("Piter") {
+        activators {
+            regex(
+                "в Питере|в питере|питер|Питер|" +
+                        "погода в питере|спб|Спб|СпБ|СПБ|" +
+                        "погода в спб"
+            )
+        }
+
+        action {
+            var cityCoordinates: Coordinates = getCoordinates("Санкт-Петербург")
+            var currentWeather: Weather = getWeather(cityCoordinates)
+
+            record(
+                "Погода в городе Санкт-Петербург :\n" +
+                        "Температура воздуха - ${currentWeather.temperature} °С\n" +
+                        "Ощущается как - ${currentWeather.feelsLike} °С\n" +
+                        "Скорость ветра - ${currentWeather.windSpeed} м/с.\n" +
+                        "Облачность - ${currentWeather.clouds} %.\n" +
+                        "А больше я ничего сказать не могу...",
+                "done"
+            )
+        }
+    }
+    state("Yes") {
+        activators {
+            regex(
+                "да|Да|интересует|расскажи|" +
+                        "ну и какая|какая|давай|" +
+                        "ну|допустим"
+            )
+        }
         action {
             record("У меня нет Ваших геоданных, в каком" +
                     " городе Вас интересует погода?", "city")
         }
-
-        state("city") {
+        state("Yes") {
             activators {
                 catchAll()
             }
@@ -56,21 +107,25 @@ val MainScenario = Scenario {
                 )
             }
         }
-
         state("done") {
             action {
                 reactions.alice?.endSession()
             }
         }
     }
-
     state("no") {
         activators {
-            regex("нет|не хочу")
+            regex("нет|не хочу|не интересуюсь|" +
+                    "меня не интересует погода|не интересует" +
+                    "|Ни в каком")
         }
-
         action {
             reactions.say("Тогда не отвлекайте меня от работы. До свидания!")
+            reactions.alice?.endSession()
+        }
+    }
+    state("done") {
+        action {
             reactions.alice?.endSession()
         }
     }
